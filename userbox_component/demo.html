@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+   
+
+    <title>userbox example</title>
+
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form >
+		<section class="example1">
+			<input type="text" name="ub" id="ub" value="" />
+			<a id="btn-open">打开</a>
+			<a id="btn-close">关闭</a>
+			<a id="btn-clear">清空</a>
+		</section>
+		<br><br>
+		<section class="example2">
+			<span id="ub2" xtype="userbox" width="200" mode="simple" multiple="true" required="ture" 
+				tabs="
+					[{name:'全部',url: '/contacts/getAllUser.action'},
+						{name:'部门',url: '/contacts/getContactsTree.action'},
+						{name:'角色',url: '/contacts/getApplicationAndRoleContactsTree.action'},
+						{name:'常用',url: '/contacts/getFavoriteContacts.action'}
+					]"> 我将被渲染成用户选择框
+			</span>
+			<a id="btn-clear2">清空2</a>
+		</section>
+		
+      </form>
+
+    </div>
+
+
+   
+    <script src="./jquery-1.11.3.min.js"></script>
+	<script src="./jquery.userbox.js"></script>
+	<script>
+		$(document).ready(function(){
+		
+			var ub = $("#ub").userbox({
+				//属性和事件回调可自定义，无自定义需求可完全不填，具体用法参考说明文档
+				multiple: false,//是否多选模式
+				mode: 'all',//simple:精简模式|all:完整模式
+				tabs: [{name:'全部',url: '/contacts/getAllUser.action'},
+			       {name:'部门',url: '/contacts/getContactsTree.action'},
+			       {name:'角色',url: '/contacts/getApplicationAndRoleContactsTree.action'},
+			       {name:'常用',url: '/contacts/getFavoriteContacts.action'}
+			       ],
+				width: 'auto',//宽度
+				disabled: false,//是否禁用
+				required: false,//是否必填
+				separator: ';',//多选模式下的分隔符
+				onSuccess: function(){
+					alert('触发 onSuccess事件回调！');
+				},
+				onOpen: function(){
+					alert('触发 onOpen事件回调！');
+				},
+				onClose: function(){
+					alert('触发 onClose事件回调！');
+				},
+				onClear: function(){
+					alert('触发 onClear事件回调！');
+				},
+				onSelect: function(user){
+					alert('触发 onSelect事件回调！');
+					alert('用户名称：'+user.name);
+					return true;
+				},
+				onUnSelect: function(user){
+					alert('触发 onUnSelect事件回调！');
+					alert('用户名称：'+user.name);
+					return true;
+				}
+			});
+			
+			$("#btn-open").on("click",function(e){
+				ub.userbox("open");
+			});
+			$("#btn-close").on("click",function(e){
+				ub.userbox("close");
+			});
+			$("#btn-clear").on("click",function(e){
+				ub.userbox("clear");
+			});
+			$("#btn-clear2").on("click",function(e){
+				$("#ub2").userbox("clear");
+				//var userArray = $("#ub2").userbox("getSelects");
+				//$("#ub2").userbox("setSelects",userArray);
+			});
+			
+		});
+	</script>
+  </body>
+</html>

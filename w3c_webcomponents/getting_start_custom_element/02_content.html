@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <title>seation1-custom-element</title>
+
+ 
+    <!-- <script src="../webcomponentsjs/webcomponents-loader.js"></script> -->
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    
+  <style>
+
+    body {
+      margin: 16px;
+    }
+
+  </style>
+
+  <template id="x-foo-from-template">
+    <style>
+      p { color: orange; }
+    </style>
+    <p>I'm in Shadow DOM.My markup was stamped from a &lt;template&gt;.</p>
+  </template>
+</head>
+<body>
+<script>
+  /**
+  * 通过shadowDOM创建元素
+  * 我今天可以使用 Shadow DOM v1 吗？
+  * 
+  * 如果有 polyfill，那么是的，您可以使用。请参见浏览器支持。
+  * 
+  * shadow DOM 提供哪些安全功能？
+  * 
+  * Shadow DOM 不是一项安全功能。它是一款轻量级工具，用于限定作用域 CSS 并在组件中隐藏 DOM 树。 如果您需要一个真正的安全边界，请使用 <iframe>。
+  * 
+  * UI组件是否必须使用 shadow DOM？
+  * 
+  * 不是！您无需创建使用 shadow DOM 的网络组件。但是，编写使用 Shadow DOM 的自定义元素意味着您可以利用其功能，例如 CSS 作用域、DOM 封装以及组合。
+  */
+  customElements.define('x-foo-shadowdom', class extends HTMLElement {
+  constructor() {
+    super(); 
+
+    // Attach a shadow root to the element.
+    let shadowRoot = this.attachShadow({mode: 'open'});
+    shadowRoot.innerHTML = `
+      <style>:host {}</style> <!-- look ma, scoped styles -->
+      <b>I'm in shadow dom!</b>
+      <slot></slot>
+      `;
+    }
+  });
+
+  /**
+  * 通过 <template> 创建元素
+  *我们在 HTML 中定义新的元素：<x-foo-from-template>
+  *元素的 Shadow DOM 使用 <template> 创建
+  *由于是 Shadow DOM，元素的 DOM 局限于元素本地
+  *由于是 Shadow DOM，元素的内部 CSS 作用域限于元素内
+  */
+  customElements.define('x-foo-from-template', class extends HTMLElement {
+    constructor() {
+      super(); 
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      const t = document.querySelector('#x-foo-from-template');
+      const instance = t.content.cloneNode(true);
+      shadowRoot.appendChild(instance);
+    }
+  });
+</script>
+<br>
+<x-foo-shadowdom>
+  <p><b>User's</b> custom text</p>
+</x-foo-shadowdom>
+<br>
+<br>
+<x-foo-from-template></x-foo-from-template>
+
+<br>
+<h1>结论</h1>
+
+<p>自定义元素提供了一种新工具，可让我们在浏览器中定义新 HTML 标记并创建可重用的组件。 将它们与 Shadow DOM 和 template 等新平台原语结合使用，我们可开始实现网络组件的宏大图景：<p>
+<p>
+  <li>创建和扩展可重复使用组件的跨浏览器（网络标准）。</li>
+  <li>无需库或框架即可使用。原生 JS/HTML 威武！</li>
+  <li>提供熟悉的编程模型。仅需使用 DOM/CSS/HTML。</li>
+  <li>与其他网络平台功能良好匹配（Shadow DOM、template、CSS 自定义属性等）</li>
+  <li>与浏览器的 DevTools 紧密集成。</li>
+  <li>利用现有的无障碍功能。</li>
+</p>
+</body>
+</html>

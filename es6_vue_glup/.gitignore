@@ -1,0 +1,10 @@
+logs/*
+!.gitkeep
+node_modules
+dist
+.DS_Store
+.idea
+.selenium
+.vscode
+/core/test/
+/build/*

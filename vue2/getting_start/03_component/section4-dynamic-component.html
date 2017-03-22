@@ -1,0 +1,55 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top">
+            
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Vue2.0 component </div>
+                        <div class="panel-body">
+                            
+                            <div class="container" id="app-1">
+                                <component v-bind:is="currentView"></component>
+                                
+                                <button 
+                                    v-on:click="currentView= currentView==='home'? 'detail':'home'"
+                                    type="button" class="btn btn-info">切换</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script>
+            var vm = new Vue({
+                el:'#app-1',
+                data:{
+                    currentView:'home'
+                },
+                components:{
+                    home:{
+                        template:`
+                            <h1>我是主页</h1>\
+                        `
+                    },
+                    detail:{
+                        template:`
+                            <h1>我是详细页</h1>\
+                        `
+                    }
+                }
+
+            })
+        </script>
+    </body>
+</html>

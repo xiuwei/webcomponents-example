@@ -1,0 +1,87 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top">
+            
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Vue2.0 component event</div>
+                        <div class="panel-body">
+                            <div class="container" id="app">
+                                <currency-input label="price" v-model="price"></currency-input>
+                                <currency-input label="count" v-model="count"></currency-input>
+                                <p>总价：{{total}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script src="https://cdn.rawgit.com/chrisvfritz/5f0a639590d6e648933416f90ba7ae4e/raw/98739fb8ac6779cb2da11aaa9ab6032e52f3be00/currency-validator.js"></script>
+        <script>
+            //定义一个货币输入自定义组件
+          Vue.component('currency-input', {
+                template: '\
+                    <div>\
+                    <label v-if="label">{{ label }}</label>\
+                    $\
+                    <input\
+                        ref="input"\
+                        v-bind:value="value"\
+                        v-on:input="updateValue($event.target.value)"\
+                        v-on:focus="selectAll"\
+                    >\
+                    </div>\
+                ',
+                props: {
+                    value: {
+                    type: Number,
+                    default: 0
+                    },
+                    label: {
+                    type: String,
+                    default: ''
+                    }
+                },
+                methods: {
+                    updateValue: function (value) {
+                    var result = currencyValidator.parse(value, this.value)
+                    if (result.warning) {
+                        this.$refs.input.value = result.value
+                    }
+                    this.$emit('input', result.value)
+                    },
+                    selectAll: function (event) {
+                    // Workaround for Safari bug
+                    // http://stackoverflow.com/questions/1269722/selecting-text-on-focus-using-jquery-not-working-in-safari-and-chrome
+                    setTimeout(function () {
+                        event.target.select()
+                    }, 0)
+                    }
+                }
+                })
+
+                new Vue({
+                el: '#app',
+                data: {
+                    price: 0,
+                    count: 0,
+                },
+                computed: {
+                    total: function () {
+                    return this.price * this.count;
+                    }
+                }
+                })
+        </script>
+    </body>
+</html>

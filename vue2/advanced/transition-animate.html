@@ -1,0 +1,96 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+       <style>
+            .my-animate-enter-active, .my-animate-leave-active {
+                transition: opacity .5s
+            }
+            .my-animate-enter, .my-animate-leave-active {
+                opacity: 0
+            }
+       </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top">
+            
+        </nav>
+        <div class="container">
+            <div class="row" id="app-1">
+                <div class="col-md-12">
+                    <transition name="my-animate">
+                    <div v-if="show" class="panel panel-default">
+                        <div class="panel-heading">Vue2.0 transition animate </div>
+                        <div class="panel-body">
+                           <h1>Hello world</h1>
+                        </div>
+                    </div>
+                    </transition>
+                </div>
+                
+                <button @click="show = !show" type="button" class="btn btn-primary">Toggle</button>
+                
+            </div>
+            <div class="row" id="app-2">
+                <div class="col-md-12">
+                    <transition 
+                        v-on:before-enter="beforeEnter"
+                        v-on:enter="enter"
+                        v-on:leave="leave"
+                       
+                    >
+                    <div v-if="show" class="panel panel-default">
+                        <div class="panel-heading">Vue2.0 transition animate </div>
+                        <div class="panel-body">
+                           <h1>Hello world2</h1>
+                        </div>
+                    </div>
+                    </transition>
+                </div>
+                
+                <button @click="show = !show" type="button" class="btn btn-primary">Toggle</button>
+                
+            </div>
+        </div>
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+        <script>
+            var app1 = new Vue({
+                el:'#app-1',
+                data:{
+                    show:true
+                }
+            })
+
+            var app2 = new Vue({
+                el:"#app-2",
+                data:{
+                    show:true
+                },
+                methods:{
+                    beforeEnter:function(el){
+                        debugger;
+                        el.style.opacity = 0
+                        el.style.transformOrigin = 'left'
+                    },
+                    enter:function(el,done){
+                        Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+                        Velocity(el, { fontSize: '1em' }, { complete: done })
+                    },
+                    leave:function(el,done){
+                        Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+                        Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+                        Velocity(el, {
+                            rotateZ: '45deg',
+                            translateY: '30px',
+                            translateX: '30px',
+                            opacity: 0
+                        }, { complete: done })
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

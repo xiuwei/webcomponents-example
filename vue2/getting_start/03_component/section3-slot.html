@@ -1,0 +1,94 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top">
+            
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Vue2.0 component template ==> <code>&lt;solt&gt; </code></div>
+                        <div class="panel-body">
+                            <div class="container" id="app">
+                                <app-layout>
+                                    <h1 slot="header">这里可能是一个页面标题</h1>
+                                    <p>主要内容的一个段落。</p>
+                                    <p>另一个主要段落。</p>
+                                    <p slot="footer">这里有一些联系信息</p>
+                                </app-layout>
+                            </div>
+                            
+                            <div class="container" id="app-2">
+                                <my-list>
+                                    <my-items></my-items>
+                                </my-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script>
+            Vue.component('app-layout',{
+                template:`\
+                    <div class="container">\
+                        <header>\
+                            <slot name="header"></slot>\
+                        </header>\
+                        <main>\
+                            <slot></slot>\
+                        </main>\
+                        <footer>\
+                            <slot name="footer"></slot>\
+                        </footer>\
+                        </div>\
+                `
+            });
+
+            new Vue({
+                el:'#app'
+            })
+
+            Vue.component('my-items',{
+                template:`\
+                    <ul class="list-group">\
+                        <slot name="item" v-for="item in items" :text="item.text"></slot>
+                    </ul>\
+                `
+            })
+
+            Vue.component('my-list',{
+                template:`\
+                    <div class="row">\
+                        <div class="row">\
+                            <div class="col-md-12">\
+                                <template slot="item" scope="props">\
+                                <li class="list-group-item">{{props.text}}</li>\
+                                </template>\
+                            </div>\
+                        </div>\
+                    </div>\
+                `
+            })
+
+            new Vue({
+                el:'#app-2',
+                data:{
+                    items:[
+                        {text:'item1'},
+                        {text:'item2'},
+                        {text:'item3'}
+                    ]
+                }
+            })
+
+        </script>
+    </body>
+</html>

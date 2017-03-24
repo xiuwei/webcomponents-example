@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Demo</title>
+</head>
+<body>
+<div id="container">
+  <h1>Hello Demo</h1>
+</div>
+
+<script src="./js/vendors/seajs/sea.js"></script>
+<script>
+  // Set configuration
+  seajs.config({
+    base: "./js/",
+    alias: {
+      "jquery": "vendors/jquery/1.10.1/jquery.js"
+    }
+  });
+  seajs.use("demo/main",function(hello){
+  });
+</script>
+</body>
+</html>

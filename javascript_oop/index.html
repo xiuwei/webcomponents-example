@@ -4,22 +4,40 @@
         <title></title>
     </head>
     <body>
-        <script src="./js/klass.js"></script>
+        <script src="./js/components.js"></script>
         <script>
-            var Parent = Klass.defind({
-                constructor: function(name) { // 构造函数
+            var P = Component.define({
+                constructor: function(name) {
                     this.name = name;
                 },
-                method1: function() {
-                    console.log('hello ' + this.name);
+                hello:function(){
+                    alert("hello "+this.name);
                 },
-                method2: function(x, y) {
-                    console.log(x + y);
+                hello3:function(arg){
+                    alert('parent -->hello3 '+arg);
+                }
+
+            });
+
+            var P2 = Component.define(P,{
+                id:'',
+                hello2:function(){
+                    alert("hello2 "+this.id);
                 },
-                method3: function(x, y) {
-                    console.log(x * y);
+                hello3:function(){
+                    this.super('hahah');
                 }
             });
+
+            var p = new P2('world');
+            // p.name = "world";
+            p.id="china";
+            p.hello();
+            p.hello2();
+            p.hello3();
+            p.render();
+            
+
         </script>
     </body>
 </html>
